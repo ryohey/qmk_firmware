@@ -14,6 +14,8 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
+  IMEON,
+  IMEOFF,
 };
 
 #define KC_ KC_TRNS
@@ -32,6 +34,8 @@ enum custom_keycodes {
 #define KC_RSAD RGB_SAD
 #define KC_RVAI RGB_VAI
 #define KC_RVAD RGB_VAD
+#define KC_IMEON IMEON
+#define KC_IMEOFF IMEOFF
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -43,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|              |----+----+----+----+----+----|
      LCTL, A  , S  , D  , F  , G  ,                H  , J  , K  , L  ,SCLN,ENT,
   //|----+----+----+----+----+----+----.    ,----|----+----+----+----+----+----|
-     LSFT, Z  , X  , C  , V  , B  ,LANG2,   LANG1, N  , M  ,COMM,DOT ,SLSH,    ,
+     LSFT, Z  , X  , C  , V  , B  ,IMEOFF,  IMEON, N  , M  ,COMM,DOT ,SLSH,    ,
   //`----+----+----+--+-+----+----+----/    \----+----+----+----+----+----+----'
                        LGUI,LOWR,SPC ,         RSFT,RASE,RALT
   //                  `----+----+----'        `----+----+----'
@@ -133,6 +137,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_ADJUST);
       }
       return false;
+      break;
+    case IMEON:
+      if (record->event.pressed) {
+        register_code(KC_LANG1);
+        register_code(KC_F13);
+      } else {
+        unregister_code(KC_LANG1);
+        unregister_code(KC_F13);
+      }
+      break;
+    case IMEOFF:
+      if (record->event.pressed) {
+        register_code(KC_LANG2);
+        register_code(KC_F14);
+      } else {
+        unregister_code(KC_LANG2);
+        unregister_code(KC_F14);
+      }
       break;
   }
   return true;
